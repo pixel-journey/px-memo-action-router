@@ -6,13 +6,17 @@
 
 **One-sentence goal:** Teach a **structured transfer memo** format — `action` or `action:payload` — with hard length, charset, and known-action checks used by blend/stake/claim flows.
 
-**Real code:** `npm test` (7 tests). **Not** wasm in this repo, **not** a live transfer.
+**Real code:** `npm test` (unit + **transfer-desk composition**). **Not** wasm in this repo, **not** a live transfer.
 
 **Production mirror (C++ → wasm):** [wax-contract-compiler `pxmemo`](https://github.com/pixel-journey/wax-contract-compiler/tree/main/contracts/pxmemo) — [run 26](https://github.com/pixel-journey/wax-contract-compiler/actions/runs/42824476528), wasm SHA256 `62faa0a05cedf643ce27d3df50068631ccb90a17c075d84eabc0f816913d17a3`, audit 0/0. **Not deployed.**
 
 Token contracts treat memos as opaque. This lab is the **grammar** a dapp should apply before branching. Official network docs: [docs.wax.io](https://docs.wax.io/).
 
 ---
+
+## Composition note
+
+`memo.composition.test.ts` builds a desk: `formatMemo` → `requireKnown` → route. Claim memos with a payload are **one-shot** (`claim:airdrop-1` cannot be processed twice). Soft `parseMemo` keeps unknown actions for logging; the desk refuses them. Bare `claim` (no payload) is not keyed into the seen set.
 
 ## What is true (executed)
 
@@ -25,6 +29,7 @@ Token contracts treat memos as opaque. This lab is the **grammar** a dapp should
 | Empty / >256 / null byte | Refused |
 | Bad action case / empty payload / bad charset | Refused |
 | `formatMemo` | Round-trips with `parseMemo` |
+| Desk + claim payload | Second identical claim refused |
 
 ```bash
 npm test
@@ -37,7 +42,8 @@ npm test
 | Path | Role |
 |------|------|
 | `invariants/memo.ts` | parse / requireKnown / format |
-| `invariants/memo.test.ts` | Executed claims |
+| `invariants/memo.test.ts` | Executed unit claims |
+| `invariants/memo.composition.test.ts` | Transfer-desk routing |
 | `EDUCATION.md` | Why memos need a grammar |
 | `SECURITY.md` | Injection and length surface |
 | `SOURCES.md` | docs.wax.io and production mirror |
