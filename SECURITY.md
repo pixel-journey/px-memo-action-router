@@ -1,11 +1,19 @@
-# Security notes
+# Security notes — memo router
 
-| Issue | Lab mitigation |
-|-------|----------------|
-| Oversized memo | `MAX_MEMO_BYTES` 256 |
-| Null byte in memo | Refused |
-| Case-variant actions | Lowercase-only action regex |
-| Open payload charset | `[a-z0-9._-]` only |
-| Treating unknown as known | `requireKnown` throws |
+## Mitigated in the lab
 
-Production still needs `require_auth`, amount checks, and not trusting memo alone for value movement.
+| Issue | Behavior |
+| --- | --- |
+| Empty / overlong / null byte | refused |
+| Bad action/payload charset | refused |
+| Unknown on hard path | `requireKnown` throws |
+| Replay claim with payload | desk one-shot set |
+
+## Production still needs
+
+- Notify hygiene (`get_first_receiver`, ignore self-outbound)
+- Auth independent of memo
+- No user-chosen inline action names
+- Explicit policy for bare `claim` vs keyed payloads
+
+C++ mirror validates grammar only; [run 26](https://github.com/pixel-journey/wax-contract-compiler/actions/runs/42824476528), wasm SHA256 `62faa0a05cedf643ce27d3df50068631ccb90a17c075d84eabc0f816913d17a3`.

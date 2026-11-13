@@ -1,22 +1,65 @@
-# Education
+# Education — transfer memo grammar
 
-## The pitfall
+> **Rung:** `npm test` passes. No live transfer.  
+> **The test is the rule.** Token contracts treat memos as opaque; **your** dapp must parse before branching.
 
-Contracts that branch on free-form memos invite typos, case bugs, and oversized strings that waste CPU or RAM. Treating every memo as a command without a grammar is how `Blend` and `blend` become two different products.
+## What you should be able to do
 
-## The rule
+| Level | After this file |
+| --- | --- |
+| Beginner | Parse `action` vs `action:payload` |
+| Intermediate | Soft unknown vs `requireKnown`; format round-trip |
+| Masterclass | One-shot claim payloads and injection surface |
 
-1. ASCII action name, lowercase, 1–16 letters.
-2. Optional payload after a single `:`, charset `[a-z0-9._-]`, max 64 chars.
-3. Total memo ≤ 256 characters (Antelope-style bound for this lab).
-4. Known actions are an allow-list; others parse as `unknown` unless `requireKnown` is used.
+Known actions in this lab: `blend`, `stake`, `unstake`, `claim`, `vote`.
 
-## Official context
+---
 
-On WAX, transfers and API surfaces are documented at [docs.wax.io](https://docs.wax.io/). The memo field itself is not a typed router on-chain until **your** contract parses it. See [SOURCES.md](SOURCES.md).
+## Beginner — one scene
 
-## What this is not
+```text
+"claim"              → { action: "claim", payload: null }
+"blend:pebble-to-rock" → { action: "blend", payload: "pebble-to-rock" }
+"custom:xyz"         → { action: "unknown", raw: "custom:xyz" }  // parseMemo soft
+requireKnown("custom:xyz") → throws
+```
 
-- Not UTF-8 grapheme counting.
-- Not a full router with auth (use [px-invariant-kit](https://github.com/pixel-journey/px-invariant-kit) for shared gates).
-- Not wasm in this repo (production mirror is `pxmemo` in wax-contract-compiler).
+Empty memo, null byte, length > 256, bad charset → refused.
+
+### Predict, then run
+
+```bash
+npm test
+```
+
+1. `formatMemo("claim", "airdrop-1")` round-trips with `parseMemo`.
+2. `claim:` (empty payload) refused.
+3. Uppercase action refused (`ACTION_RE` is lowercase only).
+
+---
+
+## Intermediate — desk composition
+
+`memo.composition.test.ts`: `formatMemo` → `requireKnown` → route. Claim memos **with payload** are one-shot (`claim:airdrop-1` cannot be processed twice). Bare `claim` is not keyed into the seen set.
+
+| Helper | Role |
+| --- | --- |
+| `parseMemo` | Soft; unknown becomes `{ action: "unknown", raw }` |
+| `requireKnown` | Hard; unknown throws |
+| `formatMemo` | Inverse for known actions |
+
+---
+
+## Masterclass
+
+- Memos are **not** authorization. Always `require_auth` / notify hygiene independently.
+- Do not let memo text become an **inline action name**.
+- Production mirror: [pxmemo](https://github.com/pixel-journey/wax-contract-compiler/tree/main/contracts/pxmemo) — grammar only, not deployed.
+- Domain flows that **consume** this grammar: blend, stake, claim labs.
+
+---
+
+## What this course will not teach
+
+- That the system token validates your grammar
+- UTF-8 multi-byte edge cases beyond length ≈ bytes for ASCII
