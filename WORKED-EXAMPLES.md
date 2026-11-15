@@ -1,38 +1,29 @@
-# Worked examples — memo grammar
+# Worked examples — transfer memo router
 
-## Example A — bare and payload
+## parse
 
-| Memo | parseMemo |
+| memo | result |
 | --- | --- |
-| `stake` | `{ action: "stake", payload: null }` |
-| `stake:farm-1` | `{ action: "stake", payload: "farm-1" }` |
-| `vote:prop.42` | known + payload |
+| `claim` | action claim, payload null |
+| `blend:pebble-to-rock` | blend + payload |
+| `custom:xyz` | soft `unknown` (no throw) |
 
-## Example B — unknown soft vs hard
+## refusals
 
-```text
-parseMemo("custom:xyz") → unknown + raw
-requireKnown("custom:xyz") → throw
-```
+Empty, over `MAX_MEMO_BYTES`, null byte, `Blend:x` (case), empty payload `blend:`, space in payload, payload over `MAX_PAYLOAD_CHARS`.
 
-## Example C — refusals
+## requireKnown / format
 
-| Input | Error |
-| --- | --- |
-| `` | empty |
-| length 257 | too long |
-| contains `\0` | null byte |
-| `Claim` | bad action |
-| `claim:` | empty payload |
-| `blend:BAD` | bad payload charset |
+`requireKnown("stake:pool1")` ok. `requireKnown("nope:x")` → unknown action.
 
-## Example D — one-shot desk
+`formatMemo("vote")` → `vote`. `formatMemo("blend", "r1")` → `blend:r1`. Round-trip with parse.
 
-Process `claim:airdrop-1` once → ok. Same memo again → refused. Bare `claim` may be allowed multiple times depending on desk policy (composition documents the payload keying).
+## composition desk
 
-## Example E — round-trip
+Routes all of: blend, stake, unstake, claim+payload, vote.
 
-```text
-formatMemo("blend", "pebble-to-rock") === "blend:pebble-to-rock"
-parseMemo(that).action === "blend"
-```
+Claim `airdrop-1` once; second same payload throws `claim already processed`. Different payload `airdrop-2` ok.
+
+Soft parse keeps unknown; requireKnown refuses it.
+
+Claim **without** payload is not one-shot (seen set stays empty for two bare `claim` memos in the batch test).
