@@ -1,29 +1,26 @@
 # Worked examples — transfer memo router
 
-## parse
+Known actions in tests: `claim`, `blend`, `stake`, `unstake`, `vote` (and peers in the router table).
 
-| memo | result |
+## parseMemo
+
+| Input | Result |
 | --- | --- |
 | `claim` | action claim, payload null |
-| `blend:pebble-to-rock` | blend + payload |
-| `custom:xyz` | soft `unknown` (no throw) |
+| `blend:pebble-to-rock` | action blend, payload pebble-to-rock |
+| `custom:xyz` | action **unknown**, raw preserved |
+| empty / null byte / over MAX_MEMO_BYTES | throws |
+| `Blend:x` | bad action (case) |
+| `blend:` | empty payload |
+| `blend:HAS SPACE` | bad payload |
+| payload longer than MAX_PAYLOAD_CHARS | payload too long |
 
-## refusals
+## requireKnown / formatMemo
 
-Empty, over `MAX_MEMO_BYTES`, null byte, `Blend:x` (case), empty payload `blend:`, space in payload, payload over `MAX_PAYLOAD_CHARS`.
+`requireKnown("stake:pool1")` → stake / pool1. `requireKnown("nope:x")` → unknown action.
 
-## requireKnown / format
+`formatMemo("vote")` → `vote`. `formatMemo("blend", "r1")` → `blend:r1`. Round-trip with parseMemo holds.
 
-`requireKnown("stake:pool1")` ok. `requireKnown("nope:x")` → unknown action.
+`formatMemo("claim", "Bad")` refused (payload shape).
 
-`formatMemo("vote")` → `vote`. `formatMemo("blend", "r1")` → `blend:r1`. Round-trip with parse.
-
-## composition desk
-
-Routes all of: blend, stake, unstake, claim+payload, vote.
-
-Claim `airdrop-1` once; second same payload throws `claim already processed`. Different payload `airdrop-2` ok.
-
-Soft parse keeps unknown; requireKnown refuses it.
-
-Claim **without** payload is not one-shot (seen set stays empty for two bare `claim` memos in the batch test).
+Teaching parse only — no on-chain transfer notify in this lab.
