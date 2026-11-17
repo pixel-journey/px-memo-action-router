@@ -3,6 +3,8 @@
 > **Rung:** `npm test` passes. No live transfer.  
 > **The test is the rule.** Token contracts treat memos as opaque; **your** dapp must parse before branching.
 
+Official: [docs.wax.io](https://docs.wax.io/) · [eosio.token](https://github.com/eosio/eosio.contracts).
+
 ## What you should be able to do
 
 | Level | After this file |
@@ -57,9 +59,32 @@ npm test
 - Production mirror: [pxmemo](https://github.com/pixel-journey/wax-contract-compiler/tree/main/contracts/pxmemo) — grammar only, not deployed.
 - Domain flows that **consume** this grammar: blend, stake, claim labs.
 
+### Common mistakes
+
+1. Bare `claim` vs `claim:id` counted as the same one-shot.  
+2. Using soft parse to move funds.  
+3. Treating the memo as `require_auth`.  
+4. Letting a DEX-style memo skip tax without a tested path ([dex tax](https://github.com/pixel-journey/px-token-dex-differentiated-tax)).  
+5. Routing treasury and user deposits with the same parser and no symbol check.
+
+### Nice-to-have extensions (not in this repo)
+
+| Idea | Note |
+| --- | --- |
+| Versioned prefix `v2:blend:12` | Lets you migrate grammar |
+| Memo hash in the receipt | Indexers can join without storing the full string |
+| Per-action payload schema | blend ids vs stake asset ids |
+
+### Exercises
+
+1. Is `CLAIM` a valid action? (No — lowercase only.)  
+2. Can `claim:airdrop-1` process twice on the desk? (No.)  
+3. Is the memo a signature? (No.)
+
 ---
 
 ## What this course will not teach
 
 - That the system token validates your grammar
 - UTF-8 multi-byte edge cases beyond length ≈ bytes for ASCII
+- That a soft-unknown path is safe to fund
