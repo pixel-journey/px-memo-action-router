@@ -8,6 +8,16 @@
 
 The system token does **not** validate your grammar. Soft parse must not move funds; hard path (`requireKnown`) is for funded branches.
 
+## Product facts locked by this lab
+
+- Grammar is `action` or `action:payload`. Actions are **lowercase only** (`CLAIM` is refused).
+- Soft `parseMemo` may return `{ action: "unknown", raw }`. Hard `requireKnown` throws on unknown.
+- Soft parse must **not** move funds. Funded branches use the hard path.
+- Memos are **not** authorization and must never become an **inline action name**. Inline names stay constants.
+- `claim:payload` is one-shot on the desk. Bare `claim` is not the same key as `claim:id`.
+- Bound length is **256**. Empty payload after `:` is refused.
+- Do not invent a `dex:` tax exemption without a test. See [dex tax](https://github.com/pixel-journey/px-token-dex-differentiated-tax).
+
 ## Production mirror
 
 | Artifact | Link |
