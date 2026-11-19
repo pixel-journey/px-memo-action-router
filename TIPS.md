@@ -39,4 +39,4 @@
 | NFT blend | [simple blend](https://github.com/pixel-journey/px-blend-simple-nft-to-nft) |
 | Wildcard slots | [schema wildcard](https://github.com/pixel-journey/px-blend-schema-wildcard-recipes) |
 | Token book | [ledger](https://github.com/pixel-journey/px-token-balance-ledger) |
-| C++ mirror | [pxmemo](https://github.com/pixel-journey/wax-contract-compiler/tree/main/contracts/pxmemo) |
+| C++ mirror | `wax-contract-compiler` (private; not this public course) |

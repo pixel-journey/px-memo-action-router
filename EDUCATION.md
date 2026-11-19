@@ -56,7 +56,7 @@ npm test
 
 - Memos are **not** authorization. Always `require_auth` / notify hygiene independently.
 - Do not let memo text become an **inline action name**.
-- Production mirror: [pxmemo](https://github.com/pixel-journey/wax-contract-compiler/tree/main/contracts/pxmemo) — grammar only, not deployed.
+- A private compiler tree named `pxmemo` is grammar only and is not deployed. It is not this course.
 - Domain flows that **consume** this grammar: blend, stake, claim labs.
 
 ### Common mistakes

@@ -29,4 +29,4 @@
 
 ## Honesty limits
 
-Grammar only. C++ mirror: [pxmemo](https://github.com/pixel-journey/wax-contract-compiler/tree/main/contracts/pxmemo) (run 26, wasm SHA256 `62faa0a05cedf643ce27d3df50068631ccb90a17c075d84eabc0f816913d17a3`). Related: [simple blend](https://github.com/pixel-journey/px-blend-simple-nft-to-nft) · [ledger](https://github.com/pixel-journey/px-token-balance-ledger).
+Grammar only. C++ mirror: `wax-contract-compiler` (private; not this public course) (run 26, wasm SHA256 `62faa0a05cedf643ce27d3df50068631ccb90a17c075d84eabc0f816913d17a3`). Related: [simple blend](https://github.com/pixel-journey/px-blend-simple-nft-to-nft) · [ledger](https://github.com/pixel-journey/px-token-balance-ledger).

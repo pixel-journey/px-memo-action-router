@@ -43,4 +43,4 @@ Bare `claim` and `claim:payload` are **different** product policies. Do not coun
 | Memo as authorization | Always `require_auth` / notify rules separately |
 | Invented `dex:` tax skip | Not tested — see [dex tax](https://github.com/pixel-journey/px-token-dex-differentiated-tax) |
 
-Teaching parse only — no on-chain transfer notify in this lab. C++ mirror: [pxmemo](https://github.com/pixel-journey/wax-contract-compiler/tree/main/contracts/pxmemo).
+Teaching parse only — no on-chain transfer notify in this lab. C++ mirror: `wax-contract-compiler` (private; not this public course).

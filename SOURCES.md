@@ -18,13 +18,9 @@ The system token does **not** validate your grammar. Soft parse must not move fu
 - Bound length is **256**. Empty payload after `:` is refused.
 - Do not invent a `dex:` tax exemption without a test. See [dex tax](https://github.com/pixel-journey/px-token-dex-differentiated-tax).
 
-## Production mirror
+## Build record, not this course
 
-| Artifact | Link |
-| --- | --- |
-| C++ `pxmemo` | [wax-contract-compiler/contracts/pxmemo](https://github.com/pixel-journey/wax-contract-compiler/tree/main/contracts/pxmemo) |
-| CI | [run 26](https://github.com/pixel-journey/wax-contract-compiler/actions/runs/42824476528) |
-| WASM SHA256 | `62faa0a05cedf643ce27d3df50068631ccb90a17c075d84eabc0f816913d17a3` |
+A private compiler tree named `pxmemo` produced wasm SHA256 `62faa0a05cedf643ce27d3df50068631ccb90a17c075d84eabc0f816913d17a3`. It is grammar only, not deployed, and not public. Read the TypeScript tests here.
 
 ## Related labs (consumers of the grammar)
 
