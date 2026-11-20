@@ -5,7 +5,7 @@
 
 Official: [docs.wax.io](https://docs.wax.io/) · [eosio.token](https://github.com/eosio/eosio.contracts).
 
-## What you should be able to do
+## Learning outcomes
 
 | Level | After this file |
 | --- | --- |
@@ -28,8 +28,6 @@ requireKnown("custom:xyz") → throws
 
 Empty memo, null byte, length > 256, bad charset → refused.
 
-### Predict, then run
-
 ```bash
 npm test
 ```
@@ -50,13 +48,21 @@ npm test
 | `requireKnown` | Hard; unknown throws |
 | `formatMemo` | Inverse for known actions |
 
+### Attack → test
+
+| Attack | Lab behavior |
+| --- | --- |
+| Soft-unknown funds move | soft is not for funding paths |
+| Uppercase `CLAIM` | refused |
+| `claim:airdrop-1` twice | one-shot refuses second |
+| Memo as inline action name | never |
+
 ---
 
 ## Masterclass
 
 - Memos are **not** authorization. Always `require_auth` / notify hygiene independently.
 - Do not let memo text become an **inline action name**.
-- A private compiler tree named `pxmemo` is grammar only and is not deployed. It is not this course.
 - Domain flows that **consume** this grammar: blend, stake, claim labs.
 
 ### Common mistakes
@@ -77,9 +83,9 @@ npm test
 
 ### Exercises
 
-1. Is `CLAIM` a valid action? (No — lowercase only.)  
-2. Can `claim:airdrop-1` process twice on the desk? (No.)  
-3. Is the memo a signature? (No.)
+1. Is `CLAIM` a valid action? (**No** — lowercase only.)  
+2. Can `claim:airdrop-1` process twice on the desk? (**No**.)  
+3. Is the memo a signature? (**No**.)
 
 ---
 
