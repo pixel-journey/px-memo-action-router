@@ -21,12 +21,20 @@
 
 ## Attack angles
 
-1. Using the memo text as an Antelope action name.
-2. Treating the memo as authorization.
-3. Bare `claim` and `claim:id` counted as the same one-shot.
-4. Letting a DEX-style memo skip tax without a tested path.
+1. Using the memo text as an Antelope action name.  
+2. Treating the memo as authorization.  
+3. Bare `claim` and `claim:id` counted as the same one-shot.  
+4. Letting a DEX-style memo skip tax without a tested path.  
 5. Trusting `to` from the transfer for a destination the memo also names.
 
 ## Honesty limits
 
-Grammar only. C++ mirror: `wax-contract-compiler` (private; not this public course) (run 26, wasm SHA256 `62faa0a05cedf643ce27d3df50068631ccb90a17c075d84eabc0f816913d17a3`). Related: [simple blend](https://github.com/pixel-journey/px-blend-simple-nft-to-nft) · [ledger](https://github.com/pixel-journey/px-token-balance-ledger).
+Grammar only. No broadcast.
+
+| Sibling | Distinction |
+| --- | --- |
+| [simple blend](https://github.com/pixel-journey/px-blend-simple-nft-to-nft) | Template multiset craft |
+| [DEX tax](https://github.com/pixel-journey/px-token-dex-differentiated-tax) | Memo exemption is untested there |
+| [ledger](https://github.com/pixel-journey/px-token-balance-ledger) | Balance conservation |
+
+[docs.wax.io](https://docs.wax.io/).
