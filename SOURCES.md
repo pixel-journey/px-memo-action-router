@@ -5,6 +5,12 @@
 | [docs.wax.io](https://docs.wax.io/) | Transfers and contract patterns |
 | [docs.eosnetwork.com](https://docs.eosnetwork.com/) | `on_notify`, action data |
 | [eosio.token](https://github.com/eosio/eosio.contracts) | Memo field is opaque string |
+| [Alcor Bridge memo lab](https://github.com/pixel-journey/px-alcor-bridge-memo-and-credit-rules) | Cross-chain deposit memo — **different** grammar |
+| [wharfkit/skill](https://github.com/wharfkit/skill) | SessionKit if a host later transfers |
+
+```bash
+git clone https://github.com/wharfkit/skill.git ~/.claude/skills/wharfkit
+```
 
 The system token does **not** validate your grammar. Soft parse must not move funds; hard path (`requireKnown`) is for funded branches.
 
@@ -17,6 +23,10 @@ The system token does **not** validate your grammar. Soft parse must not move fu
 - `claim:payload` is one-shot on the desk. Bare `claim` is not the same key as `claim:id`.
 - Bound length is **256**. Empty payload after `:` is refused.
 - Do not invent a `dex:` tax exemption without a test. See [dex tax](https://github.com/pixel-journey/px-token-dex-differentiated-tax).
+
+## Portability
+
+Memo-as-routing-tag ports on every Antelope token transfer. Size limits, charset, and token contract accounts are chain-local. Alcor Bridge deposit memos use a different product rule set.
 
 ## Build record, not this course
 
